@@ -79,9 +79,9 @@ namespace CardGame.UnitTests
             Deck deck = Deck.CreateDeck(10, new RandomNumberGenerator());
 
             // Assert
-            deck.TotalCardsCount().Should().Be(10);
+            deck.Count().Should().Be(10);
             deck.DrawPile.Count.Should().Be(10);
-            deck.DiscaredPile.Count.Should().Be(0);
+            deck.DiscardedPile.Count.Should().Be(0);
             deck.PlayedCard.Should().BeNull();
         }
 
@@ -95,9 +95,9 @@ namespace CardGame.UnitTests
             deck.DrawCard();
 
             // Assert
-            deck.TotalCardsCount().Should().Be(10);
+            deck.Count().Should().Be(10);
             deck.DrawPile.Count.Should().Be(9);
-            deck.DiscaredPile.Count.Should().Be(0);
+            deck.DiscardedPile.Count.Should().Be(0);
             deck.PlayedCard.Should().NotBeNull();
         }
     }

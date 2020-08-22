@@ -8,7 +8,7 @@ namespace CardGame.Domain
         private IRandomNumberGenerator _randomNumberGenerator;
 
         public Stack<Card> DrawPile { get; private set; }
-        public Stack<Card> DiscaredPile { get; private set; }
+        public Stack<Card> DiscardedPile { get; private set; }
 
         public Card PlayedCard { get; set; }
 
@@ -18,7 +18,7 @@ namespace CardGame.Domain
             var deck = new Deck {
                 _randomNumberGenerator = random,
                 DrawPile = new Stack<Card>(),
-                DiscaredPile = new Stack<Card>()
+                DiscardedPile = new Stack<Card>()
             };
 
             for(int i = 1; i <= numberOfCards; i++) {
@@ -49,24 +49,26 @@ namespace CardGame.Domain
             }
         }
 
-        public void DrawCard()
+        public Card DrawCard()
         {
-            if (DrawPile.Count == 0 && DiscaredPile.Count == 0)
+            if (DrawPile.Count == 0 && DiscardedPile.Count == 0)
                 throw new Exception("Deck is empty!");
 
             if (DrawPile.Count == 0)
             {
-                Shuffle(DiscaredPile);
-                for (int i = 0; i < DiscaredPile.Count; i++)
-                    DrawPile.Push(DiscaredPile.Pop());
+                Shuffle(DiscardedPile);
+                var cardsCount = DiscardedPile.Count;
+                for (int i = 0; i < cardsCount; i++)
+                    DrawPile.Push(DiscardedPile.Pop());
             }
 
             PlayedCard = DrawPile.Pop();
+            return PlayedCard;
         }
         
-        public int TotalCardsCount()
+        public int Count()
         {
-            return DrawPile.Count + DiscaredPile.Count + (PlayedCard != null ? 1 : 0);
+            return DrawPile.Count + DiscardedPile.Count + (PlayedCard != null ? 1 : 0);
         }
 
         public void Swap(Card[] cards, int index1, int index2)

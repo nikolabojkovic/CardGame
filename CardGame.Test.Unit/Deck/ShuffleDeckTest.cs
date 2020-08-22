@@ -37,17 +37,22 @@ namespace CardGame.UnitTests
             // Arrange
         
             Deck deck = Deck.CreateDeck(6, new FakeRandomNumberGenerator());            
-            var cards = deck.DrawPile.ToArray();
+            var beforeShuffle = deck.DrawPile.ToArray();
 
             // Act
             deck.Shuffle(deck.DrawPile);
 
             // Assert            
             deck.DrawPile.Count.Should().Be(6);
-           // deck.DrawPile.Peek().Face.Should().NotBe(6);
-            foreach(var card in deck.DrawPile) {
-                Console.WriteLine(card);
+            var afterShuffle = deck.DrawPile.ToArray();
+            var stateHasChanged = false;
+            for(int i = 0; i < afterShuffle.Length; i++) 
+            {
+                if (beforeShuffle[i] != afterShuffle[i])
+                    stateHasChanged = true;
             }
+
+            stateHasChanged.Should().BeTrue();
         }
     }
 }
