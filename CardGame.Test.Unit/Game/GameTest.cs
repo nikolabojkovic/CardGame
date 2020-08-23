@@ -11,6 +11,7 @@ namespace CardGame.UnitTests
         [Theory]
         [InlineData(60)]
         [InlineData(40)]
+        [InlineData(0)]
         public void DrowCards_ShouldDrawEqualNumberOfCardsTo3Players(int numberOfCards)
         {
             // Arrange
@@ -95,6 +96,35 @@ namespace CardGame.UnitTests
 
             // Assert
             winningCard.Should().BeNull();
+        }
+    
+        [Fact]
+        public void StartGame_ShouldPlay2Rounds()
+        {
+             // Arrange
+            var players = new List<Player> 
+            {
+                Player.CreatePlayer("Player 1"),
+                Player.CreatePlayer("Player 2")
+            };
+
+            var deck = Deck.CreateDeck(0, new FakeRandomNumberGenerator());
+            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
+            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 6));
+            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 7));
+            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
+
+            var game = Game.CreateGame(players, deck, new FakeWriter());
+
+            // Act
+            game.StartGame();
+
+            // Assert
+            deck.DrawPile.Count.Should().Be(0);
+            players[0].DeckOfCards.DiscardedPile.Count.Should().Be(0);
+            players[0].DeckOfCards.DrawPile.Count.Should().Be(0);
+            players[1].DeckOfCards.DiscardedPile.Count.Should().Be(4);
+            players[1].DeckOfCards.DrawPile.Count.Should().Be(0);
         }
     }
 }

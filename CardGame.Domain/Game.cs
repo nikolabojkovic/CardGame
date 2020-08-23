@@ -28,7 +28,7 @@ namespace CardGame.Domain
 
             while (Players.Count(p => !p.HasLostTheGame()) > 1)
             {
-                var playersStillInGame = Players.Where(p => !p.HasLostTheGame());
+                var playersStillInGame = Players.Where(p => !p.HasLostTheGame()).ToList();
                 var winningCard = PlayRound(playersStillInGame);
 
                 // reset players played cards
@@ -43,8 +43,10 @@ namespace CardGame.Domain
                 _writer.WriteLine();
             }
 
-            var winner = Players.Single(p => !p.HasLostTheGame());
-            _writer.WriteLine($"{winner.Name} wins the game!");
+            var winner = Players.SingleOrDefault(p => !p.HasLostTheGame());
+
+            if (winner != null)
+                _writer.WriteLine($"{winner.Name} wins the game!");
         }
 
         public void DrawCards()
