@@ -15,7 +15,7 @@ namespace CardGame.UnitTests
             var expectedCard = $"({expectedFace} {expectedSuit})";
 
             // Act
-            Card card = Card.CreateCard(expectedSuit, expectedFace);
+            Card card = Card.Create(expectedSuit, expectedFace);
 
             // Assert
             card.Suit.Should().Be(expectedSuit);

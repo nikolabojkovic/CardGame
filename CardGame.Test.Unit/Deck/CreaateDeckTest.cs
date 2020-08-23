@@ -15,7 +15,7 @@ namespace CardGame.UnitTests
             // Arrange
 
             // Act
-            Deck deck = Deck.CreateDeck(expectedNumberOfCards, new RandomNumberGenerator());
+            Deck deck = Deck.Create(expectedNumberOfCards, new RandomNumberGenerator());
 
             // Assert
             deck.DrawPile.Count.Should().Be(expectedNumberOfCards);
@@ -27,7 +27,7 @@ namespace CardGame.UnitTests
             // Arrange
 
             // Act
-            Deck deck = Deck.CreateDeck(40, new RandomNumberGenerator());
+            Deck deck = Deck.Create(40, new RandomNumberGenerator());
 
             // Assert
             deck.DrawPile.Count.Should().Be(40);
@@ -48,7 +48,7 @@ namespace CardGame.UnitTests
             // Arrange
 
             // Act
-            Deck deck = Deck.CreateDeck(47, new RandomNumberGenerator());
+            Deck deck = Deck.Create(47, new RandomNumberGenerator());
 
             // Assert
             deck.DrawPile.Count.Should().Be(47);
@@ -75,7 +75,7 @@ namespace CardGame.UnitTests
             // Arrange
 
             // Act
-            Deck deck = Deck.CreateDeck(10, new RandomNumberGenerator());
+            Deck deck = Deck.Create(10, new RandomNumberGenerator());
 
             // Assert
             deck.Count().Should().Be(10);
@@ -88,7 +88,7 @@ namespace CardGame.UnitTests
         public void TotalCardCount_WithPlayedCard_ShouldReturn10Cards()
         {
             // Arrange
-            Deck deck = Deck.CreateDeck(10, new RandomNumberGenerator());
+            Deck deck = Deck.Create(10, new RandomNumberGenerator());
 
             // Act
             deck.DrawCard();

@@ -1,8 +1,8 @@
 namespace CardGame.Domain
 {
-    public class GameAction : IDomainEvent
+    public class GameActionEvent : IDomainEvent
     {
-        public GameAction(string s)
+        public GameActionEvent(string s)
         {
             Description = s;
         }

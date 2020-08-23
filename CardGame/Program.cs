@@ -11,18 +11,17 @@ namespace CardGame
             try 
             {
                 IWriter writer = new ConsoleWriter();
-                DomainEvents.Register<GameAction>(ev => writer.WriteLine(ev.Description));
+                // register event to respond to game actions
+                DomainEvents.Register<GameActionEvent>(action => writer.WriteLine(action));
+                var numberOfCards = 40;
 
-                var players = new List<Player> 
-                {
-                    Player.CreatePlayer("Player 1"),
-                    Player.CreatePlayer("Player 2")
-                };
-
-                var deck = Deck.CreateDeck(40, new RandomNumberGenerator());
-
-                Game.CreateGame(players, deck)
-                    .StartGame();
+                Game.Create(new List<Player> 
+                        {
+                            Player.Create("Player 1"),
+                            Player.Create("Player 2")
+                        },
+                        Deck.Create(numberOfCards, new RandomNumberGenerator()))
+                    .Play();
                 
             }
             catch(Exception ex)

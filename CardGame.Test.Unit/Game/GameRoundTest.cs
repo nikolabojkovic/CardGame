@@ -9,37 +9,35 @@ namespace CardGame.UnitTests
     public class GameRoundTest
     {
         [Fact]
-        public void CollectPlayedCards_ShouldCollectAllPlayedCards()
+        public void PlayCard_ShouldReturnPlayedCard()
         {
             // Arrange
-            var deckOfCards1 = Deck.CreateDeck(0, new RandomNumberGenerator());
-            deckOfCards1.DrawPile.Push(Card.CreateCard(Suit.Clubs, 7));
-            deckOfCards1.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
-            var deckOfCards2 = Deck.CreateDeck(0, new RandomNumberGenerator());
-            deckOfCards2.DrawPile.Push(Card.CreateCard(Suit.Clubs, 2));
-            deckOfCards2.DrawPile.Push(Card.CreateCard(Suit.Clubs, 5));
-            var deckOfCards3 = Deck.CreateDeck(0, new RandomNumberGenerator());
-            deckOfCards3.DrawPile.Push(Card.CreateCard(Suit.Clubs, 6));
-            deckOfCards3.DrawPile.Push(Card.CreateCard(Suit.Clubs, 8));
+            var deckOfCards1 = Deck.Create(0, new RandomNumberGenerator());
+            deckOfCards1.DrawPile.Push(Card.Create(Suit.Clubs, 7));
+            deckOfCards1.DrawPile.Push(Card.Create(Suit.Clubs, 4));
+            var deckOfCards2 = Deck.Create(0, new RandomNumberGenerator());
+            deckOfCards2.DrawPile.Push(Card.Create(Suit.Clubs, 2));
+            deckOfCards2.DrawPile.Push(Card.Create(Suit.Clubs, 5));
+            var deckOfCards3 = Deck.Create(0, new RandomNumberGenerator());
+            deckOfCards3.DrawPile.Push(Card.Create(Suit.Clubs, 6));
+            deckOfCards3.DrawPile.Push(Card.Create(Suit.Clubs, 8));
 
             var players = new List<Player>
             {
-                Player.CreatePlayer("Player 1"),
-                Player.CreatePlayer("Player 2"),
-                Player.CreatePlayer("Player 3")
-            };
+                Player.Create("Player 1"),
+                Player.Create("Player 2"),
+                Player.Create("Player 3")
+            }; 
 
-            players[0].DeckOfCards = deckOfCards1;
-            players[0].PlayCard();
-            players[1].DeckOfCards = deckOfCards2;
-            players[1].PlayCard();
-            players[2].DeckOfCards = deckOfCards3;
-            players[2].PlayCard();
-
-            var game = Game.CreateGame(players, null);
+            var cards = new List<Card>();
 
             // Act
-            var cards = game.CollectRoundPlayedCards(players).ToList();
+            players[0].DeckOfCards = deckOfCards1;
+            cards.Add(players[0].PlayCard());
+            players[1].DeckOfCards = deckOfCards2;
+            cards.Add(players[1].PlayCard());
+            players[2].DeckOfCards = deckOfCards3;
+            cards.Add(players[2].PlayCard());
 
             // Assert
             cards.Count().Should().Be(3);
@@ -52,15 +50,15 @@ namespace CardGame.UnitTests
         public void AssignCardsToWinner_OneRound_ShouldTransfereAllPlayedCardsToWinner()
         {
             // Arrange
-            var player = Player.CreatePlayer("Player 1");
-            var deckOfCards = Deck.CreateDeck(10, new RandomNumberGenerator());
-            deckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 4));
-            deckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 3));
-            deckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 8));
-            var game = Game.CreateGame(new List<Player> {player}, deckOfCards);
+            var player = Player.Create("Player 1");
+            var deckOfCards = Deck.Create(10, new RandomNumberGenerator());
+            deckOfCards.DiscardedPile.Push(Card.Create(Suit.Clubs, 4));
+            deckOfCards.DiscardedPile.Push(Card.Create(Suit.Clubs, 3));
+            deckOfCards.DiscardedPile.Push(Card.Create(Suit.Clubs, 8));
+            var game = Game.Create(new List<Player> {player}, deckOfCards);
 
             // Act
-            game.AssignCardsToWinner(player);
+            game.AssignPlayedCardsTo(player);
 
             // Assert
             var gamePlayer = game.Players.ToList()[0];
@@ -76,23 +74,23 @@ namespace CardGame.UnitTests
             // Arrange
             var players = new List<Player> 
             {
-                Player.CreatePlayer("Player 1"),
-                Player.CreatePlayer("Player 2")
+                Player.Create("Player 1"),
+                Player.Create("Player 2")
             };
 
-            var deck = Deck.CreateDeck(0, new RandomNumberGenerator());
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 6));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 7));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 1));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 5));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 2));
+            var deck = Deck.Create(0, new RandomNumberGenerator());
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 4));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 6));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 7));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 1));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 5));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 2));
 
-            var game = Game.CreateGame(players, deck);
-            game.DrawCards();
+            var game = Game.Create(players, deck);
+            game.DrawCards(game.DeckOfCards.DrawPile.Count / game.Players.Count());
 
             // Act
-            game.PlayRound(players);
+            game.PlayRoundFor(players);
 
             // Assert
             deck.DrawPile.Count.Should().Be(0);
@@ -108,24 +106,24 @@ namespace CardGame.UnitTests
             // Arrange
             var players = new List<Player> 
             {
-                Player.CreatePlayer("Player 1"),
-                Player.CreatePlayer("Player 2")
+                Player.Create("Player 1"),
+                Player.Create("Player 2")
             };
 
-            var deck = Deck.CreateDeck(0, new RandomNumberGenerator());
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 6));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 7));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 5));
-            deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 2));
+            var deck = Deck.Create(0, new RandomNumberGenerator());
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 4));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 6));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 7));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 4));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 5));
+            deck.DrawPile.Push(Card.Create(Suit.Clubs, 2));
 
-            var game = Game.CreateGame(players, deck);
-            game.DrawCards();
+            var game = Game.Create(players, deck);
+            game.DrawCards(game.DeckOfCards.DrawPile.Count / game.Players.Count());
 
             // Act
-            game.PlayRound(players);
-            game.PlayRound(players);
+            game.PlayRoundFor(players);
+            game.PlayRoundFor(players);
 
             // Assert
             deck.DrawPile.Count.Should().Be(0);

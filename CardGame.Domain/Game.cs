@@ -11,45 +11,37 @@ namespace CardGame.Domain
 
         protected Game() {  }
 
-        public static Game CreateGame(IEnumerable<Player> players, Deck deckOfCards) {
+        public static Game Create(IEnumerable<Player> players, Deck deckOfCards) {
             return new Game {
                 Players = players,
                 DeckOfCards = deckOfCards
             };
         }
 
-        public void StartGame()
+        public void Play()
         {
             DeckOfCards.Shuffle(DeckOfCards.DrawPile);
-            DrawCards();
+            DrawCards(DeckOfCards.DrawPile.Count / Players.Count());
 
             while (Players.Count(p => !p.HasLostTheGame()) > 1)
             {
                 var playersStillInGame = Players.Where(p => !p.HasLostTheGame()).ToList();
-                var winningCard = PlayRound(playersStillInGame);
-
-                // reset players played cards
-                foreach (var player in playersStillInGame)
-                    player.DeckOfCards.PlayedCard = null;
+                var winningCard = PlayRoundFor(playersStillInGame);
 
                 if (winningCard != null)
-                    DomainEvents.Raise<GameAction>(new GameAction($"{winningCard.Player.Name} wins this round"));
+                    DomainEvents.Raise<GameActionEvent>(new GameActionEvent($"{winningCard.Player.Name} wins this round"));
                 else
-                    DomainEvents.Raise<GameAction>(new GameAction($"No winner in this round"));
+                    DomainEvents.Raise<GameActionEvent>(new GameActionEvent($"No winner in this round"));
 
-                DomainEvents.Raise<GameAction>(new GameAction($""));
+                DomainEvents.Raise<GameActionEvent>(new GameActionEvent($""));
             }
 
-            var winner = Players.SingleOrDefault(p => !p.HasLostTheGame());
-
-            if (winner != null)
-                DomainEvents.Raise<GameAction>(new GameAction($"{winner.Name} wins the game!"));
+            var winner = Players.Single(p => !p.HasLostTheGame());
+            DomainEvents.Raise<GameActionEvent>(new GameActionEvent($"{winner.Name} wins the game!"));
         }
 
-        public void DrawCards()
+        public void DrawCards(int cardsPerPlayer)
         {
-            var cardsPerPlayer = DeckOfCards.DrawPile.Count / Players.Count();
-
             if (DeckOfCards.DrawPile.Count < Players.Count())
                 throw new Exception("No enough cards in the deck!");
             
@@ -58,36 +50,33 @@ namespace CardGame.Domain
                 for (int i = 0; i < cardsPerPlayer; i++) 
                 {
                     var card = DeckOfCards.DrawPile.Pop();
-                    card.AssignToPlayer(player);
+                    card.Player = player;
                     player.DeckOfCards.DrawPile.Push(card);
                 }
             }
         }
 
-        public Card PlayRound(IEnumerable<Player> players) 
+        public Card PlayRoundFor(IEnumerable<Player> players) 
         {         
-            // play cards
+            var cardsOfThisRound = new List<Card>();
+
+            // collect cards
             foreach (var player in players)          
-                player.PlayCard(); 
+               cardsOfThisRound.Add(player.PlayCard()); 
 
-            var cards = CollectRoundPlayedCards(players);
-
-            // push to discarded(temp) pile
-            foreach (var card in cards)
+            // temporary store cards
+            foreach (var card in cardsOfThisRound)
                 DeckOfCards.DiscardedPile.Push(card);
 
-            var winningCard = FindWinningCard(cards);           
+            var winningCard = FindWinningCardFrom(cardsOfThisRound);           
 
-            // assign all played cards to winned if one found
             if (winningCard != null)
-            {
-                AssignCardsToWinner(winningCard.Player);
-            }
+                AssignPlayedCardsTo(winningCard.Player);
 
             return winningCard;            
         }
 
-        public Card FindWinningCard(IEnumerable<Card> cards) {
+        public Card FindWinningCardFrom(IEnumerable<Card> cards) {
             var maxCardNumber = cards.Max(c => c.Face);
             var winningCards = cards.Where(c => c.Face == maxCardNumber).ToList();
             
@@ -97,23 +86,12 @@ namespace CardGame.Domain
             return null;
         }
 
-        public IEnumerable<Card> CollectRoundPlayedCards(IEnumerable<Player> players) {
-            var cards = new List<Card>();
-
-            foreach(var player in players)
-                cards.Add(player.DeckOfCards.PlayedCard);
-
-            return cards;
-        }
-
-        public void AssignCardsToWinner(Player player) 
+        public void AssignPlayedCardsTo(Player roundWinner) 
         {
-            var roundWinner = Players.Single(x => x == player);
-
             while (DeckOfCards.DiscardedPile.Count > 0) 
             {
                 var card = DeckOfCards.DiscardedPile.Pop();
-                card.AssignToPlayer(player);
+                card.Player = roundWinner;
                 roundWinner.DeckOfCards.DiscardedPile.Push(card);
             }
         }

@@ -12,8 +12,8 @@ namespace CardGame.UnitTests
         {
             // Arrange
             string expectedPlayerName = "Player 1";
-            var player = Player.CreatePlayer(expectedPlayerName);
-            player.DeckOfCards = Deck.CreateDeck(0, new RandomNumberGenerator());
+            var player = Player.Create(expectedPlayerName);
+            player.DeckOfCards = Deck.Create(0, new RandomNumberGenerator());
 
             // Act            
             Action act = () =>  player.PlayCard();

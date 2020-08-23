@@ -10,15 +10,15 @@ namespace CardGame.UnitTests
         public void SwapCards_InDeck_ShouldSwap2Cards()
         {
             // Arrange
-            Deck deck = Deck.CreateDeck(40, new RandomNumberGenerator());
+            Deck deck = Deck.Create(40, new RandomNumberGenerator());
             Card[] cards = new Card[6] 
             {
-                Card.CreateCard(Suit.Clubs, 1),
-                Card.CreateCard(Suit.Clubs, 2),
-                Card.CreateCard(Suit.Clubs, 3),
-                Card.CreateCard(Suit.Clubs, 4),
-                Card.CreateCard(Suit.Clubs, 5),
-                Card.CreateCard(Suit.Clubs, 6)
+                Card.Create(Suit.Clubs, 1),
+                Card.Create(Suit.Clubs, 2),
+                Card.Create(Suit.Clubs, 3),
+                Card.Create(Suit.Clubs, 4),
+                Card.Create(Suit.Clubs, 5),
+                Card.Create(Suit.Clubs, 6)
             };
 
             // Act
@@ -33,7 +33,7 @@ namespace CardGame.UnitTests
         public void Shuffle_Deck_ShouldShuffleDrawPile()
         {
             // Arrange        
-            Deck deck = Deck.CreateDeck(6, new FakeRandomNumberGenerator());            
+            Deck deck = Deck.Create(6, new FakeRandomNumberGenerator());            
             var beforeShuffle = deck.DrawPile.ToArray();
 
             // Act
@@ -56,7 +56,7 @@ namespace CardGame.UnitTests
         public void ShuffleDeck_EmptyDeck_BorderlineCase_ShouldShuffleDrawPile()
         {
             // Arrange        
-            Deck deck = Deck.CreateDeck(0, new FakeRandomNumberGenerator());            
+            Deck deck = Deck.Create(0, new FakeRandomNumberGenerator());            
             var beforeShuffle = deck.DrawPile.ToArray();
 
             // Act
@@ -70,7 +70,7 @@ namespace CardGame.UnitTests
         public void ShuffleDeck_WithOneCard_BorderLineCase_ShouldShuffleDrawPile()
         {
             // Arrange        
-            Deck deck = Deck.CreateDeck(1, new FakeRandomNumberGenerator());            
+            Deck deck = Deck.Create(1, new FakeRandomNumberGenerator());            
             var beforeShuffle = deck.DrawPile.ToArray();
 
             // Act

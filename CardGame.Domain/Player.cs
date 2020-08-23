@@ -7,19 +7,19 @@ namespace CardGame.Domain
         
         protected Player() { }
 
-        public static Player CreatePlayer(string name)
+        public static Player Create(string name)
         {            
             return new Player
             {
                  Name = name,
-                 DeckOfCards = Deck.CreateDeck(0, new RandomNumberGenerator())
+                 DeckOfCards = Deck.Create(0, new RandomNumberGenerator())
             };
         }
 
         public Card PlayCard()
         {
             var card = DeckOfCards.DrawCard();
-            DomainEvents.Raise<GameAction>(new GameAction($"{Name} ({DeckOfCards.Count()} cards) {DeckOfCards.PlayedCard.Face}"));
+            DomainEvents.Raise<GameActionEvent>(new GameActionEvent($"{Name} ({DeckOfCards.Count()} cards) {DeckOfCards.PlayedCard.Face}"));
 
             return card;
         }

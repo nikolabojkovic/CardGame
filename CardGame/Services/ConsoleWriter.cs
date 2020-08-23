@@ -2,11 +2,11 @@ using System;
 
 namespace CardGame.Domain 
 {
-    public class ConsoleWriter: IWriter
+    public class ConsoleWriter : IWriter
     {
-        public void WriteLine(string content) 
+        public void WriteLine(GameActionEvent action) 
         {
-            Console.WriteLine(content);
+            Console.WriteLine(action.Description);
         }
 
         public void WriteLine()

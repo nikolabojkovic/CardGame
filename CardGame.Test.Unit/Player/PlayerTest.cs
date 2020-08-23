@@ -12,7 +12,7 @@ namespace CardGame.UnitTests
             // Arrange
             string expectedPlayerName = "Player 1";
             // Act
-            var player = Player.CreatePlayer(expectedPlayerName);
+            var player = Player.Create(expectedPlayerName);
 
             // Assert
             player.Name.Should().Be(expectedPlayerName);
@@ -23,10 +23,10 @@ namespace CardGame.UnitTests
         {
             // Arrange
             string expectedPlayerName = "Player 1";
-            var player = Player.CreatePlayer(expectedPlayerName);
+            var player = Player.Create(expectedPlayerName);
 
             // Act
-            player.DeckOfCards = Deck.CreateDeck(10, new RandomNumberGenerator());
+            player.DeckOfCards = Deck.Create(10, new RandomNumberGenerator());
 
             // Assert
             player.DeckOfCards.Count().Should().Be(10);
@@ -38,8 +38,8 @@ namespace CardGame.UnitTests
         {
             // Arrange
             string expectedPlayerName = "Player 1";
-            var player = Player.CreatePlayer(expectedPlayerName);
-            player.DeckOfCards = Deck.CreateDeck(10, new RandomNumberGenerator());
+            var player = Player.Create(expectedPlayerName);
+            player.DeckOfCards = Deck.Create(10, new RandomNumberGenerator());
 
             // Act
             var card = player.PlayCard();
@@ -57,11 +57,11 @@ namespace CardGame.UnitTests
         {
             // Arrange
             string expectedPlayerName = "Player 1";
-            var player = Player.CreatePlayer(expectedPlayerName);
-            player.DeckOfCards = Deck.CreateDeck(2, new FakeRandomNumberGenerator());
-            player.DeckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 9));
-            player.DeckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 7));
-            player.DeckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 8));
+            var player = Player.Create(expectedPlayerName);
+            player.DeckOfCards = Deck.Create(2, new FakeRandomNumberGenerator());
+            player.DeckOfCards.DiscardedPile.Push(Card.Create(Suit.Clubs, 9));
+            player.DeckOfCards.DiscardedPile.Push(Card.Create(Suit.Clubs, 7));
+            player.DeckOfCards.DiscardedPile.Push(Card.Create(Suit.Clubs, 8));
 
             // Act
             player.PlayCard();
@@ -83,20 +83,17 @@ namespace CardGame.UnitTests
         {
             // Arrange
             string expectedPlayerName = "Player 1";
-            var player = Player.CreatePlayer(expectedPlayerName);
-            player.DeckOfCards = Deck.CreateDeck(2, new FakeRandomNumberGenerator());
+            var player = Player.Create(expectedPlayerName);
+            player.DeckOfCards = Deck.Create(2, new FakeRandomNumberGenerator());
 
             // Act
             player.PlayCard();
-            var card = player.PlayCard();
-            player.DeckOfCards.PlayedCard = null;
+            player.PlayCard();
 
             // Assert
             player.HasLostTheGame().Should().BeTrue();
             player.DeckOfCards.DrawPile.Count.Should().Be(0);
             player.DeckOfCards.DiscardedPile.Count.Should().Be(0);
-            player.DeckOfCards.Count().Should().Be(0);
-            player.DeckOfCards.PlayedCard.Should().BeNull();
         }
     }
 }

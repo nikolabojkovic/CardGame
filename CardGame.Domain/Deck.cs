@@ -14,7 +14,7 @@ namespace CardGame.Domain
 
         protected Deck() {  }
 
-        public static Deck CreateDeck(int numberOfCards, IRandomNumberGenerator random) { 
+        public static Deck Create(int numberOfCards, IRandomNumberGenerator random) { 
             var deck = new Deck {
                 _randomNumberGenerator = random,
                 DrawPile = new Stack<Card>(),
@@ -23,7 +23,7 @@ namespace CardGame.Domain
 
             for(int i = 1; i <= numberOfCards; i++) {
                 var cardNumber = (i % 10);
-                deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, cardNumber == 0 ? 10 : cardNumber));
+                deck.DrawPile.Push(Card.Create(Suit.Clubs, cardNumber == 0 ? 10 : cardNumber));
             }           
 
             return deck;

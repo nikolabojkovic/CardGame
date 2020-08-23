@@ -8,19 +8,14 @@ namespace CardGame.Domain
         public Suit Suit { get; private set; }
         public int Face { get; private set; }
 
-        public Player Player{ get; private set; }
+        public Player Player{ get; set; }
 
-        public static Card CreateCard(Suit suit, int face)
+        public static Card Create(Suit suit, int face)
         { 
             return new Card {
                 Suit = suit,
                 Face = face
             };
-        }
-
-        public void AssignToPlayer(Player player)
-        {
-            Player = player;
         }
 
         public override string ToString() {
