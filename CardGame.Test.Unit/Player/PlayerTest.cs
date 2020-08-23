@@ -16,12 +16,10 @@ namespace CardGame.UnitTests
 
             // Assert
             player.Name.Should().Be(expectedPlayerName);
-            player.DeckOfCards.Count().Should().Be(0);
-            player.HasLostTheGame().Should().BeTrue();
         }
 
         [Fact]
-        public void AssignDeckOfCards_ToPlayer_ShouldCreatePlayerObjectWithDeckOfCards()
+        public void AssignDeckOfCards_ToPlayer_ShouldAssignDeckOfCardsToPlayer()
         {
             // Arrange
             string expectedPlayerName = "Player 1";

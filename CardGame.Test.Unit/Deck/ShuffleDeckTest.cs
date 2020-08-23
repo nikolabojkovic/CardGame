@@ -1,8 +1,6 @@
-using System;
 using CardGame.Domain;
 using Xunit;
 using FluentAssertions;
-using Moq;
 
 namespace CardGame.UnitTests
 {
@@ -34,8 +32,7 @@ namespace CardGame.UnitTests
         [Fact]
         public void Shuffle_Deck_ShouldShuffleDrawPile()
         {
-            // Arrange
-        
+            // Arrange        
             Deck deck = Deck.CreateDeck(6, new FakeRandomNumberGenerator());            
             var beforeShuffle = deck.DrawPile.ToArray();
 
@@ -45,14 +42,43 @@ namespace CardGame.UnitTests
             // Assert            
             deck.DrawPile.Count.Should().Be(6);
             var afterShuffle = deck.DrawPile.ToArray();
-            var stateHasChanged = false;
+            var deckHasBeenShuffled = false;
             for(int i = 0; i < afterShuffle.Length; i++) 
             {
                 if (beforeShuffle[i] != afterShuffle[i])
-                    stateHasChanged = true;
+                    deckHasBeenShuffled = true;
             }
 
-            stateHasChanged.Should().BeTrue();
+            deckHasBeenShuffled.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ShuffleDeck_EmptyDeck_BorderlineCase_ShouldShuffleDrawPile()
+        {
+            // Arrange        
+            Deck deck = Deck.CreateDeck(0, new FakeRandomNumberGenerator());            
+            var beforeShuffle = deck.DrawPile.ToArray();
+
+            // Act
+            deck.Shuffle(deck.DrawPile);
+
+            // Assert            
+            deck.DrawPile.Count.Should().Be(0);
+        }
+
+          [Fact]
+        public void ShuffleDeck_WithOneCard_BorderLineCase_ShouldShuffleDrawPile()
+        {
+            // Arrange        
+            Deck deck = Deck.CreateDeck(1, new FakeRandomNumberGenerator());            
+            var beforeShuffle = deck.DrawPile.ToArray();
+
+            // Act
+            deck.Shuffle(deck.DrawPile);
+
+            // Assert            
+            deck.DrawPile.Count.Should().Be(1);
+            deck.DrawPile.Peek().Face.Should().Be(1);
         }
     }
 }

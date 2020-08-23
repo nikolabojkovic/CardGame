@@ -1,4 +1,3 @@
-using System;
 using CardGame.Domain;
 using Xunit;
 using FluentAssertions;
@@ -71,7 +70,7 @@ namespace CardGame.UnitTests
         }
 
         [Fact]
-        public void TotalCardsCount_WithNoPlayedCard_ShouldReturn10Cards()
+        public void TotalCardCount_WithNoPlayedCard_ShouldReturn10Cards()
         {
             // Arrange
 
@@ -86,12 +85,12 @@ namespace CardGame.UnitTests
         }
 
         [Fact]
-        public void TotalCardsCount_WithPlayedCard_ShouldReturn10Cards()
+        public void TotalCardCount_WithPlayedCard_ShouldReturn10Cards()
         {
             // Arrange
+            Deck deck = Deck.CreateDeck(10, new RandomNumberGenerator());
 
             // Act
-            Deck deck = Deck.CreateDeck(10, new RandomNumberGenerator());
             deck.DrawCard();
 
             // Assert

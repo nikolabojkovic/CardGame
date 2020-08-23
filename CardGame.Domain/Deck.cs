@@ -55,12 +55,7 @@ namespace CardGame.Domain
                 throw new Exception("Deck is empty!");
 
             if (DrawPile.Count == 0)
-            {
-                Shuffle(DiscardedPile);
-                var cardsCount = DiscardedPile.Count;
-                for (int i = 0; i < cardsCount; i++)
-                    DrawPile.Push(DiscardedPile.Pop());
-            }
+                MoveCardsFromDiscadedToDrawPile();
 
             PlayedCard = DrawPile.Pop();
             return PlayedCard;
@@ -76,6 +71,15 @@ namespace CardGame.Domain
             var temp = cards[index1];
             cards[index1] = cards[index2];
             cards[index2] = temp;
+        }
+
+        private void MoveCardsFromDiscadedToDrawPile()
+        {
+            Shuffle(DiscardedPile);
+            var cardsCount = DiscardedPile.Count;
+
+            for (int i = 0; i < cardsCount; i++)
+                DrawPile.Push(DiscardedPile.Pop());
         }
     }
 }
