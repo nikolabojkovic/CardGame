@@ -2,13 +2,13 @@ namespace CardGame.Domain
 {
     public class Player 
     {
-        public Deck DeckOfCards { get; private set; }
+        public Deck DeckOfCards { get; set; }
         public string Name { get; private set; }
         
         protected Player() { }
 
         public static Player CreatePlayer(string name)
-        {
+        {            
             return new Player
             {
                  Name = name,
@@ -16,14 +16,12 @@ namespace CardGame.Domain
             };
         }
 
-        public void AssignDeckOfCards(Deck deckOfCards)
-        {
-            DeckOfCards = deckOfCards;
-        }
-
         public Card PlayCard()
         {
-            return DeckOfCards.DrawCard();
+            var card = DeckOfCards.DrawCard();
+            DomainEvents.Raise<GameAction>(new GameAction($"{Name} ({DeckOfCards.Count()} cards) {DeckOfCards.PlayedCard.Face}"));
+
+            return card;
         }
 
         public bool HasLostTheGame()

@@ -24,7 +24,7 @@ namespace CardGame.UnitTests
                 Player.CreatePlayer("Player 3")
             };
 
-            var game = Game.CreateGame(players, deckOfCards, new FakeWriter());
+            var game = Game.CreateGame(players, deckOfCards);
 
             // Act
             game.DrawCards();
@@ -49,7 +49,7 @@ namespace CardGame.UnitTests
                 Player.CreatePlayer("Player 2")
             };
 
-            var game = Game.CreateGame(players, deckOfCards, new FakeWriter());
+            var game = Game.CreateGame(players, deckOfCards);
 
             // Act
             game.DrawCards();
@@ -63,7 +63,7 @@ namespace CardGame.UnitTests
         public void FindWinningCard_WhereOnlyOneWinningCard_ShouldFindHighestCard()
         {
             // Arrange
-            var game = Game.CreateGame(null, null, new FakeWriter());
+            var game = Game.CreateGame(null, null);
             List<Card> cards = new List<Card> 
             {
                 Card.CreateCard(Suit.Clubs, 5),
@@ -83,7 +83,7 @@ namespace CardGame.UnitTests
         public void FindWinningCard_WhereMoreThenOneWinningCard_ShouldNotFind()
         {
             // Arrange
-            var game = Game.CreateGame(null, null, new FakeWriter());
+            var game = Game.CreateGame(null, null);
             List<Card> cards = new List<Card> 
             {
                 Card.CreateCard(Suit.Clubs, 8),
@@ -114,7 +114,7 @@ namespace CardGame.UnitTests
             deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 7));
             deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
 
-            var game = Game.CreateGame(players, deck, new FakeWriter());
+            var game = Game.CreateGame(players, deck);
 
             // Act
             game.StartGame();
@@ -140,7 +140,7 @@ namespace CardGame.UnitTests
             var deck = Deck.CreateDeck(0, new FakeRandomNumberGenerator());
             deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 4));
 
-            var game = Game.CreateGame(players, deck, new FakeWriter());
+            var game = Game.CreateGame(players, deck);
 
             // Act
             Action act = () =>  game.StartGame();

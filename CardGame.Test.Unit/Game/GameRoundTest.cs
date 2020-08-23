@@ -29,14 +29,14 @@ namespace CardGame.UnitTests
                 Player.CreatePlayer("Player 3")
             };
 
-            players[0].AssignDeckOfCards(deckOfCards1);
+            players[0].DeckOfCards = deckOfCards1;
             players[0].PlayCard();
-            players[1].AssignDeckOfCards(deckOfCards2);
+            players[1].DeckOfCards = deckOfCards2;
             players[1].PlayCard();
-            players[2].AssignDeckOfCards(deckOfCards3);
+            players[2].DeckOfCards = deckOfCards3;
             players[2].PlayCard();
 
-            var game = Game.CreateGame(players, null, new FakeWriter());
+            var game = Game.CreateGame(players, null);
 
             // Act
             var cards = game.CollectRoundPlayedCards(players).ToList();
@@ -57,7 +57,7 @@ namespace CardGame.UnitTests
             deckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 4));
             deckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 3));
             deckOfCards.DiscardedPile.Push(Card.CreateCard(Suit.Clubs, 8));
-            var game = Game.CreateGame(new List<Player> {player}, deckOfCards, new FakeWriter());
+            var game = Game.CreateGame(new List<Player> {player}, deckOfCards);
 
             // Act
             game.AssignCardsToWinner(player);
@@ -88,7 +88,7 @@ namespace CardGame.UnitTests
             deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 5));
             deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 2));
 
-            var game = Game.CreateGame(players, deck, new FakeWriter());
+            var game = Game.CreateGame(players, deck);
             game.DrawCards();
 
             // Act
@@ -120,7 +120,7 @@ namespace CardGame.UnitTests
             deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 5));
             deck.DrawPile.Push(Card.CreateCard(Suit.Clubs, 2));
 
-            var game = Game.CreateGame(players, deck, new FakeWriter());
+            var game = Game.CreateGame(players, deck);
             game.DrawCards();
 
             // Act

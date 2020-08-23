@@ -6,18 +6,15 @@ namespace CardGame.Domain
 {
     public class Game 
     {
-        private IWriter _writer;
-
         public Deck DeckOfCards { get; private set; }
         public IEnumerable<Player> Players { get; private set; }
 
         protected Game() {  }
 
-        public static Game CreateGame(IEnumerable<Player> players, Deck deckOfCards, IWriter writer) {
+        public static Game CreateGame(IEnumerable<Player> players, Deck deckOfCards) {
             return new Game {
                 Players = players,
-                DeckOfCards = deckOfCards,
-                _writer = writer
+                DeckOfCards = deckOfCards
             };
         }
 
@@ -36,17 +33,17 @@ namespace CardGame.Domain
                     player.DeckOfCards.PlayedCard = null;
 
                 if (winningCard != null)
-                    Console.WriteLine($"{winningCard.Player.Name} wins this round");
+                    DomainEvents.Raise<GameAction>(new GameAction($"{winningCard.Player.Name} wins this round"));
                 else
-                    Console.WriteLine("No winner in this round");
+                    DomainEvents.Raise<GameAction>(new GameAction($"No winner in this round"));
 
-                _writer.WriteLine();
+                DomainEvents.Raise<GameAction>(new GameAction($""));
             }
 
             var winner = Players.SingleOrDefault(p => !p.HasLostTheGame());
 
             if (winner != null)
-                _writer.WriteLine($"{winner.Name} wins the game!");
+                DomainEvents.Raise<GameAction>(new GameAction($"{winner.Name} wins the game!"));
         }
 
         public void DrawCards()
@@ -70,11 +67,8 @@ namespace CardGame.Domain
         public Card PlayRound(IEnumerable<Player> players) 
         {         
             // play cards
-            foreach (var player in players)
-            {                
-                player.PlayCard();   
-                _writer.WriteLine($"{player.Name} ({player.DeckOfCards.Count()} cards) {player.DeckOfCards.PlayedCard.Face}");             
-            }
+            foreach (var player in players)          
+                player.PlayCard(); 
 
             var cards = CollectRoundPlayedCards(players);
 

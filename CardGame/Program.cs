@@ -10,6 +10,9 @@ namespace CardGame
         {
             try 
             {
+                IWriter writer = new ConsoleWriter();
+                DomainEvents.Register<GameAction>(ev => writer.WriteLine(ev.Description));
+
                 var players = new List<Player> 
                 {
                     Player.CreatePlayer("Player 1"),
@@ -18,8 +21,8 @@ namespace CardGame
 
                 var deck = Deck.CreateDeck(40, new RandomNumberGenerator());
 
-                var game = Game.CreateGame(players, deck, new ConsoleWriter());
-                game.StartGame();
+                Game.CreateGame(players, deck)
+                    .StartGame();
                 
             }
             catch(Exception ex)
