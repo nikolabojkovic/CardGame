@@ -52,6 +52,9 @@ namespace CardGame.Domain
         public void DrawCards()
         {
             var cardsPerPlayer = DeckOfCards.DrawPile.Count / Players.Count();
+
+            if (DeckOfCards.DrawPile.Count < Players.Count())
+                throw new Exception("No enough cards in the deck!");
             
             foreach (var player in Players)
             {
