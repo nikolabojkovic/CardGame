@@ -29,14 +29,15 @@ namespace CardGame.UnitTests
                 Player.Create("Player 3")
             }; 
 
+            players[0].DeckOfCards = deckOfCards1;
+            players[1].DeckOfCards = deckOfCards2;
+            players[2].DeckOfCards = deckOfCards3;
+
             var cards = new List<Card>();
 
             // Act
-            players[0].DeckOfCards = deckOfCards1;
             cards.Add(players[0].PlayCard());
-            players[1].DeckOfCards = deckOfCards2;
             cards.Add(players[1].PlayCard());
-            players[2].DeckOfCards = deckOfCards3;
             cards.Add(players[2].PlayCard());
 
             // Assert
@@ -123,6 +124,9 @@ namespace CardGame.UnitTests
 
             // Act
             game.PlayRoundFor(players);
+            players[0].DeckOfCards.DiscardedPile.Count.Should().Be(0);
+            players[1].DeckOfCards.DiscardedPile.Count.Should().Be(0);
+
             game.PlayRoundFor(players);
 
             // Assert
