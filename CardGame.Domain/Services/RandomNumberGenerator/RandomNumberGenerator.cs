@@ -6,7 +6,7 @@ namespace CardGame.Domain
     {
         public override int Next(int maxValue) 
         {
-            return base.Next(maxValue);
+            return base.Next(0, maxValue);
         }
     }
 }

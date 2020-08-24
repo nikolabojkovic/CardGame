@@ -31,13 +31,10 @@ namespace CardGame.Domain
 
         public void Shuffle(Stack<Card> pile) 
         {
-            var cards = new Card[pile.Count];
-            for(int i = 0; i < cards.Length; i++)
-            {
-                cards[i] = pile.Pop();
-            }
+            var cards = pile.ToArray();
+            pile.Clear();
 
-            for (int i = 0; i < cards.Length; i++)
+            for (int i = cards.Length - 1; i > 0 ; i--)
             {
                 var randomIndex = _randomNumberGenerator.Next(i + 1);
                 Swap(cards, 0, randomIndex);
