@@ -173,9 +173,9 @@ namespace CardGame.UnitTests
 
             // Assert
             deck.DrawPile.Count.Should().Be(0);
-            players[0].DeckOfCards.DiscardedPile.Count.Should().Be(0);
+            players[0].DeckOfCards.DiscardedPile.Count.Should().Be(4);
             players[0].DeckOfCards.DrawPile.Count.Should().Be(0);
-            players[1].DeckOfCards.DiscardedPile.Count.Should().Be(4);
+            players[1].DeckOfCards.DiscardedPile.Count.Should().Be(0);
             players[1].DeckOfCards.DrawPile.Count.Should().Be(0);
         }
 

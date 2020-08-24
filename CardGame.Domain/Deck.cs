@@ -37,7 +37,7 @@ namespace CardGame.Domain
             for (int i = cards.Length - 1; i > 0 ; i--)
             {
                 var randomIndex = _randomNumberGenerator.Next(i + 1);
-                Swap(cards, 0, randomIndex);
+                Swap(cards, i, randomIndex);
             }
 
             for(int i = 0; i < cards.Length; i++)
